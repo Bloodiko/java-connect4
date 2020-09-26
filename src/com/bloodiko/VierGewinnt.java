@@ -16,19 +16,19 @@ public class VierGewinnt {
 		System.out.println("Lets play Connect Four (For 2 Players): ");
 //		dummy[0][6] = "\u001B[34m●\u001B[0m";
 		printGame(dummy);// Void
-		Scanner inpu = new Scanner(System.in);
+		Scanner input = new Scanner(System.in);
 
 		String p1 = "";
 		String p2 = "";
 
-		boolean invalid = true;
+		boolean invalid;
 		do {
 			System.out.println("Player 1 --  Choose 'Blue' (\u001B[34m●\u001B[0m) or 'Red' (\u001B[31m●\u001B[0m) : ");
 			System.out.println("Player 2 will use the other Symbol.");
-			String userinput1 = inpu.nextLine();
+			String userinput1 = input.nextLine();
 			String userinput = userinput1.substring(0, 1).toUpperCase() + userinput1.substring(1);
 
-			// inpu.close();
+			// input.close();
 
 			if (userinput.equals("Blue")) {
 				System.out.println("Player 1 chose Blue: \u001B[34m●\u001B[0m ");
@@ -42,7 +42,7 @@ public class VierGewinnt {
 				p2 = "\u001B[34m●\u001B[0m";
 				p1 = "\u001B[31m●\u001B[0m";
 				invalid = false;
-			} else if (!userinput.equals("Blue") && !userinput.equals("Red")) {
+			} else {
 				System.out.println("Input not valid - Try again...");
 				invalid = true;
 			}
@@ -64,11 +64,9 @@ public class VierGewinnt {
 			
 				System.out.println("Please enter only 1 to 7. Do not enter Red Rows. ");
 				System.out.println("You will return here if input is invalid or the chosen row is Full.");
-				x = inpu.nextInt();
-				if(x>7 || x<1) {
-					x=0;}
-				else if (dummy[0][x-1].contains("●")){
-					x=0;}
+				x = input.nextInt();
+				if(x>7 || x<1) x=0;
+				else if (dummy[0][x-1].contains("●")) x = 8;
 			}
 			
 			x--;
@@ -84,7 +82,7 @@ public class VierGewinnt {
 
 			
 		}
-		inpu.close();
+		input.close();
 
 	}
 
@@ -107,20 +105,19 @@ public class VierGewinnt {
 		String[] win = GetWinConditions(dummy) ;
 		String winp1 = p1.repeat(4);
 		String winp2 = p2.repeat(4);
-		System.out.println(Arrays.toString(win)); //← Debug Win Coditions
-		for (int i2 = 0; i2 < win.length; i2++) {
-			if ((win[i2]).contains(winp1)) {
-				System.out.println("Player one ("+ p1 +") wins! GG.");
+		System.out.println(Arrays.toString(win)); //← Debug Win Conditions
+		for (String s : win) {
+			if (s.contains(winp1)) {
+				System.out.println("Player one (" + p1 + ") wins! GG.");
 				System.out.println("Thanks for Playing  :) ");
 				winnerCheck = 1;
 				break;
-			} else if ((win[i2]).contains(winp2)) {
-				System.out.println("Player two ("+ p2 +") wins! GG.");
+			} else if (s.contains(winp2)) {
+				System.out.println("Player two (" + p2 + ") wins! GG.");
 				System.out.println("Thanks for Playing  :) ");
 				winnerCheck = 2;
 				break;
-			} else
-				winnerCheck = 0;
+			}
 		}
 
 		System.out.println("winnerCheck Debug: " + winnerCheck);
@@ -148,6 +145,8 @@ public class VierGewinnt {
 				dummy[i][x]=p2;
 		}
 	}
+	//String builder not useful in this case
+	@SuppressWarnings("StringConcatenationInLoop")
 	public static String[] GetWinConditions(String[][] dummy)
 	{
 		String[] win = new String[25];
@@ -207,8 +206,7 @@ public class VierGewinnt {
 
 			if (x == 0 )
 				y ++;
-			else if (x!=0)
-				x--;
+			else x--;
 
 
 
@@ -242,8 +240,7 @@ public class VierGewinnt {
 
 			if (y == 6 )
 				x ++;
-			else if (y!=6)
-				y++;
+			else y++;
 
 
 
